@@ -1,0 +1,142 @@
+body{
+    background: #6e256e;
+    margin: 0;
+    padding: 0;
+}
+header{
+    background: #572257;
+    padding: 1rem 2rem;
+    color: white;
+}
+h1 , p{
+    margin: 0;
+    padding: 0;
+}
+/* header */
+.trello_container{
+    display: flex;
+    justify-content: space-between;
+}
+.header_left{
+    display: flex;
+    gap: 4rem;
+    align-items: baseline;
+}
+.main-board{
+    display: flex;
+    gap: 1.5rem;
+}
+.board , .table{
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    cursor: pointer;
+}
+.header_right{
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+ .header_right svg{
+    cursor: pointer;
+}
+/* main */
+main {
+    padding: 2rem;
+}
+.list_to_do{
+    display: inline-flex;
+        gap: 1.5rem;
+}
+.to_do_input {
+    display: inline-flex;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+#item {
+    height: 28px;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: unset;
+    background: #00000047;
+    outline: unset;
+    color: #fff;
+}
+#enter {
+    border-radius: 0.5rem;
+    background: #00000054;
+    color: #fff;
+    border: unset;
+    padding: 0 1.5rem;
+    border: unset;
+    cursor: pointer;
+}
+
+.input_controller{
+    display: flex;
+        background: #00000091;
+        justify-content: space-between;
+        gap: 0.5rem;
+        border-radius: 0.5rem;
+        padding: 0 1rem 0 1rem;
+}
+.to_do_list{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.item{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+textarea{
+    width: 100%;
+    background: #2f102f;
+    border: unset;
+    color: white;
+    border-radius: 0.5rem;resize: none;
+    padding-top: 0.75rem;
+    outline: unset;
+}
+.edit_controller{
+    display: flex;
+        gap: 0.75rem;
+        align-items: center;
+}
+.saveBtn{
+    color: white;
+    background: #000676;
+    border: unset;
+    padding: 0.25rem 1rem;
+    border-radius: 0.5rem;
+}
+.cancelBtn {
+    color: white;
+    background: #695500;
+    border: unset;
+    padding: 0.25rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.update_controller{
+    display: none;
+}
+
+.update_controller.active{
+    display: block;
+}
+/* drag and drop */
+.item.dragging {
+    opacity: 0.5;
+    border: 2px dashed #000;
+}
+i{
+    color: #fff;
+}
+.list_to_do > *{
+    border: 1px solid #4f1b4f;
+}
+.list_to_do main{
+   padding: 1.5rem 2rem;
+}

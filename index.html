@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <title>Trello</title>
+</head>
+<body>
+    <header>
+        <div class="trello_container">
+           <div class="header_left">
+        <h1>your project</h1>
+                <div class="main-board">
+                    <div class="board"><span><svg width="16" height="16" role="presentation" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 7V15C2 16.1046 2.89543 17 4 17H6C7.10457 17 8 16.1046 8 15V7C8 5.89543 7.10457 5 6 5H4C2.89543 5 2 5.89543 2 7ZM4 7V15H6V7L4 7Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M9 7V13C9 14.1046 9.89543 15 11 15H13C14.1046 15 15 14.1046 15 13V7C15 5.89543 14.1046 5 13 5H11C9.89543 5 9 5.89543 9 7ZM11 7V13H13V7L11 7Z" fill="currentColor"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M16 17V7C16 5.89543 16.8954 5 18 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H18C16.8954 19 16 18.1046 16 17ZM18 17V7L20 7V17H18Z" fill="currentColor"></path></svg></span><p>Board</p></div>
+                    <div class="table"><span><svg width="16" height="16" role="presentation" focusable="false" viewBox="0 0 14 10" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.66683 9.66665C0.93045 9.66665 0.333496 9.06969 0.333496 8.33331V1.66665C0.333496 0.930267 0.93045 0.333313 1.66683 0.333313H12.3335C13.0699 0.333313 13.6668 0.930267 13.6668 1.66665V8.33331C13.6668 9.06969 13.0699 9.66665 12.3335 9.66665H1.66683ZM12.3335 5.66665V4.33331H5.66683V5.66665H12.3335ZM12.3335 2.99998V1.66665H5.66683V2.99998H12.3335ZM12.3335 6.99998V8.33331H5.66683V6.99998H12.3335ZM1.66683 4.33331V5.66665H4.3335V4.33331H1.66683ZM1.66683 6.99998V8.33331H4.3335V6.99998H1.66683ZM1.66683 2.99998V1.66665H4.3335V2.99998H1.66683Z" fill="currentColor"></path></svg></span><p>Table</p></div>
+                </div>
+           </div>
+           <div class="header_right">
+            <div id="date"></div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M3 3V2H2V3H3ZM12.2929 13.7071C12.6834 14.0976 13.3166 14.0976 13.7071 13.7071C14.0976 13.3166 14.0976 12.6834 13.7071 12.2929L12.2929 13.7071ZM4 11V3H2V11H4ZM3 4H11V2H3V4ZM2.29289 3.70711L12.2929 13.7071L13.7071 12.2929L3.70711 2.29289L2.29289 3.70711Z" fill="#fff"/>
+                <path d="M4 15V15C4 16.8692 4 17.8038 4.40192 18.5C4.66523 18.9561 5.04394 19.3348 5.5 19.5981C6.19615 20 7.13077 20 9 20H14C16.8284 20 18.2426 20 19.1213 19.1213C20 18.2426 20 16.8284 20 14V9C20 7.13077 20 6.19615 19.5981 5.5C19.3348 5.04394 18.9561 4.66523 18.5 4.40192C17.8038 4 16.8692 4 15 4V4" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+           </div>
+             
+ 
+    </header>
+    
+        <main>
+            <div class="list_to_do">
+                <div class="to_do">
+                    <header>
+                        <p>To DO</p>
+                    </header>
+                    <main>
+                        <div class="to do">
+                            <div class="to_do_list"></div>
+                            <div class="to_do_input">
+                                <input type="text" id="item" class="item" placeholder="add your ">
+                                <button id="enter" class="enter">Enter</button>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+                <div class="doing">
+                    <header>
+                        <p>Doing</p>
+                    </header>
+                    <main>
+                        <div class="to do">
+                            <div class="to_do_list"></div>
+                            <div class="to_do_input">
+                                <input type="text" id="item" class="item" placeholder="add your ">
+                                <button id="enter" class="enter">Enter</button>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+                <div class="check">
+                    <header>
+                        <p>Check</p>
+                    </header>
+                    <main>
+                        <div class="to do">
+                            <div class="to_do_list"></div>
+                            <div class="to_do_input">
+                                <input type="text" id="item" class="item" placeholder="add your ">
+                                <button id="enter" class="enter">Enter</button>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+                <div class="done">
+                    <header>
+                        <p>Done</p>
+                    </header>
+                    <main>
+                        <div class="to do">
+                            <div class="to_do_list"></div>
+                            <div class="to_do_input">
+                                <input type="text" id="item" class="item" placeholder="add your ">
+                                <button id="enter" class="enter">Enter</button>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+
+
+
+            </div>
+        </main>
+    </div>
+    
+
+
+
+
+
+
+    <script src="./script.js"></script>
+</body>
+</html>
