@@ -40,6 +40,11 @@ h1 , p{
  .header_right svg{
     cursor: pointer;
 }
+/*Charts Head*/
+.chartsHead{
+    display: flex;
+    justify-content: space-between;
+}
 /* main */
 main {
     padding: 2rem;
@@ -80,12 +85,12 @@ main {
         border-radius: 0.5rem;
         padding: 0 1rem 0 1rem;
 }
-.to_do_list{
+.charts{
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
-.item{
+.task{
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -96,13 +101,43 @@ textarea{
     border: unset;
     color: white;
     border-radius: 0.5rem;resize: none;
-    padding-top: 0.75rem;
+    padding-top: 1rem;
     outline: unset;
+}
+.done_controller{
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+
+}
+.doneBtn0{
+    border-right: 1px solid #ff3f34;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+.doneBtn1{
+    border-right: 1px solid #ff793f;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+.doneBtn2{
+    border-right: 1px solid #fed330;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+.doneBtn3{
+    border-right: 1px solid #12CBC4;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }
 .edit_controller{
     display: flex;
-        gap: 0.75rem;
-        align-items: center;
+    gap: 0.75rem;
+    align-items: center;
 }
 .saveBtn{
     color: white;
@@ -118,7 +153,9 @@ textarea{
     padding: 0.25rem 1rem;
     border-radius: 0.5rem;
 }
-
+.BTN:hover{
+    cursor : pointer
+}
 .update_controller{
     display: none;
 }
@@ -139,4 +176,10 @@ i{
 }
 .list_to_do main{
    padding: 1.5rem 2rem;
+}
+.done_status{
+    color: green
+}
+.undone_status{
+    color:#ffff
 }
