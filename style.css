@@ -2,10 +2,39 @@ body{
     background: #6e256e;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #572257;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #f100f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #ff00ff;
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #f100f1 #572257;
+}
+body .container>header{
+    width: 100%;
 }
 header{
     background: #572257;
-    padding: 1rem 2rem;
     color: white;
 }
 h1 , p{
@@ -16,11 +45,19 @@ h1 , p{
 .trello_container{
     display: flex;
     justify-content: space-between;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
 }
+
 .header_left{
     display: flex;
-    gap: 4rem;
+    gap: 2rem;
     align-items: baseline;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 1rem;
+    flex: 8;
 }
 .main-board{
     display: flex;
@@ -36,6 +73,7 @@ h1 , p{
     display: flex;
     align-items: center;
     gap: 1.5rem;
+    padding: 1rem;
 }
  .header_right svg{
     cursor: pointer;
@@ -45,13 +83,41 @@ h1 , p{
     display: flex;
     justify-content: space-between;
 }
+@media (max-width: 768px) {
+    .trello_container{
+        flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    .header_left{
+        gap: 1rem;
+        padding: 0.5rem;
+    }
+}
 /* main */
 main {
     padding: 2rem;
 }
 .list_to_do{
-    display: inline-flex;
-        gap: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.list_to_do::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+@media (max-width: 768px) {
+    .list_to_do {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 1rem;
+    }
 }
 .to_do_input {
     display: inline-flex;
@@ -67,6 +133,12 @@ main {
     outline: unset;
     color: #fff;
 }
+
+#item::placeholder {
+    color: #ffffff80;
+    opacity: 0.7;
+}
+
 #enter {
     border-radius: 0.5rem;
     background: #00000054;
@@ -79,7 +151,7 @@ main {
 
 .input_controller{
     display: flex;
-        background: #00000091;
+        background: #2f102f;
         justify-content: space-between;
         gap: 0.5rem;
         border-radius: 0.5rem;
@@ -88,12 +160,52 @@ main {
 .charts{
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    min-height: 380px;
+    padding: 10px;
+    transition: all 0.3s ease;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+.charts.dragging {
+    opacity: 0.8;
+    border: 2px dashed #007bff;
+    background-color: rgba(0, 123, 255, 0.1);
 }
 .task{
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    cursor: move;
+    user-select: none;
+    transition: all 0.3s ease;
+    background: #00000091;
+    border-radius: 8px;
+    margin: 5px 0;
+}
+.task.dragging {
+    opacity: 0.5;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    background: #000000b3;
+}
+.task:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.task-placeholder {
+    transition: all 0.3s ease;
+    animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+    0% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.5;
+    }
 }
 textarea{
     width: 100%;
@@ -111,25 +223,25 @@ textarea{
 
 }
 .doneBtn0{
-    border-right: 1px solid #ff3f34;
+    border-right: 1px solid #49494985;
     padding-right: 1rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 }
 .doneBtn1{
-    border-right: 1px solid #ff793f;
+    border-right: 1px solid #49494985;
     padding-right: 1rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 }
 .doneBtn2{
-    border-right: 1px solid #fed330;
+    border-right: 1px solid #49494985;
     padding-right: 1rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 }
 .doneBtn3{
-    border-right: 1px solid #12CBC4;
+    border-right: 1px solid #49494985;
     padding-right: 1rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
@@ -154,7 +266,7 @@ textarea{
     border-radius: 0.5rem;
 }
 .BTN:hover{
-    cursor : pointer
+    cursor: pointer
 }
 .update_controller{
     display: none;
@@ -182,4 +294,109 @@ i{
 }
 .undone_status{
     color:#ffff
+}
+.table_view {
+    padding: 20px;
+    width: 100%;
+}
+
+.table_view table {
+    width: 98%;
+    border-collapse: collapse;
+    background: #2f102f;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.table_view th,
+.table_view td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #4f1b4f;
+    color: white;
+}
+
+.table_view th {
+    background-color: #572257;
+    font-weight: 600;
+    color: white;
+}
+
+.table_view tr:hover {
+    background-color: #3a153a;
+}
+
+.table_view .task-cell {
+    display: flex;
+    align-items: center;
+}
+
+.table_view .task-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.table_view .edit-input {
+    padding: 5px;
+    border: 1px solid #4f1b4f;
+    border-radius: 4px;
+    margin-right: 5px;
+    background: #2f102f;
+    color: white;
+}
+
+.table_view .saveBtn,
+.table_view .cancelBtn {
+    padding: 5px 10px;
+    margin: 0 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+}
+
+.table_view .saveBtn {
+    background-color: #000676;
+}
+
+.table_view .cancelBtn {
+    background-color: #695500;
+}
+
+.table_view .BTN {
+    margin: 0 5px;
+    cursor: pointer;
+    color: white;
+}
+
+.table_view .done_status {
+    color: green;
+}
+.table:hover ,  .table.active , .board:hover ,  .board.active{
+    color: #f100f1;
+    transition: 30ms;
+}
+
+/* Autofill styles */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #00000047 inset !important;
+    -webkit-text-fill-color: #fff !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+input:-internal-autofill-selected {
+    background-color: #00000047 !important;
+    color: #fff !important;
+}
+header.chartsHead {
+    padding: 0.75rem 1rem;
+}
+@media (max-width: 768px) {
+    .list_to_do main {
+        padding: 1rem;
+    }
 }

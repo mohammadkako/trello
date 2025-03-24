@@ -1,18 +1,17 @@
 // add local strogae
-
-const itemArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem("items")) : []
+let itemArray = JSON.parse(localStorage.getItem('items')) || [];
 
 function addTasks(){
     let enterBtns = document.querySelectorAll(".enter")
 
     enterBtns.forEach((eb,i) => {
         eb.addEventListener('click' , function(){
-            let item =  document.querySelectorAll(".item")
-            if (item[i].value.length === 0) {
+            let items = document.querySelectorAll(".item")
+            if (items[i].value.length === 0) {
                 confirm("Please, fill the input!");
             } else {
-                creatItem(item[i].value, i);
-                item[i].value = "";
+                creatItem(items[i].value, i);
+                items[i].value = "";
             }        
         })
     })
@@ -20,7 +19,16 @@ function addTasks(){
 
 
 function creatItem(item,i) { 
-    itemArray.push({ value : item , done : false , chart : i})
+
+    
+    itemArray.push({ 
+        value: item, 
+        done: false, 
+        chart: i,
+        id: Date.now()
+    });
+    
+
     localStorage.setItem("items" , JSON.stringify(itemArray))
     displayItems()
 
@@ -28,19 +36,47 @@ function creatItem(item,i) {
 
 // add your item in local strogae
 function displayItems() {
-    let toDoItems = "";
-    let doingItems = "";
-    let checkItems = "";
-    let doneItems = "";
-    let items = ""
+ 
+    
+    // Group items by column and maintain order
+    const columnItems = {
+        0: [],
+        1: [],
+        2: [],
+        3: []
+    };
 
-    for(let i = 0 ; i < itemArray.length; i++){
-        items =`
-        <div class="task chart${itemArray[i].chart}" draggable="true" data-index="${i}">
+    // Group items by column while maintaining their order
+    itemArray.forEach((item, index) => {
+        columnItems[item.chart].push({
+            ...item,
+            index: index
+        });
+    });
+
+    // Generate HTML for each column
+    const toDoItems = generateColumnHTML(columnItems[0]);
+    const doingItems = generateColumnHTML(columnItems[1]);
+    const checkItems = generateColumnHTML(columnItems[2]);
+    const doneItems = generateColumnHTML(columnItems[3]);
+
+    // Update DOM
+    document.querySelector('.to_do_list').innerHTML = toDoItems;
+    document.querySelector('.doing_list').innerHTML = doingItems;
+    document.querySelector('.check_list').innerHTML = checkItems;
+    document.querySelector('.done_list').innerHTML = doneItems;
+
+    activatListeners();
+    doneStatus();
+}
+
+function generateColumnHTML(items) {
+    return items.map(item => `
+        <div class="task" draggable="true" data-index="${item.index}">
             <div class="input_controller">
                 <div class="done_controller">
-                    <i class="fa-solid fa-check doneBtns doneBtn${itemArray[i].chart} BTN"></i>
-                    <textarea disabled>${itemArray[i].value}</textarea>
+                    <i class="fa-solid fa-check doneBtns BTN"></i>
+                    <textarea disabled>${item.value}</textarea>
                 </div>
                 <div class="edit_controller">
                     <i class="fa-solid fa-eraser deleteBtn BTN"></i>
@@ -51,42 +87,23 @@ function displayItems() {
                 <button class="saveBtn">Save</button>
                 <button class="cancelBtn">Cancel</button>
             </div>
-        </div>`
+        </div>
+    `).join('');
+}
 
-        if (itemArray[i].chart === 0) {
-            toDoItems += items;
-        } else if (itemArray[i].chart === 1) {
-            doingItems += items;
-        } else if (itemArray[i].chart === 2) {
-            checkItems += items;
-        } else if (itemArray[i].chart === 3) {
-            doneItems += items;
-        }
-    }
-
-    document.querySelector('.to_do_list').innerHTML = toDoItems;
-    document.querySelector('.doing_list').innerHTML = doingItems;
-    document.querySelector('.check_list').innerHTML = checkItems;
-    document.querySelector('.done_list').innerHTML = doneItems;
-    activatListeners();
-    doneStatus();
-
-  }
-
-  function activatListeners() {
+function activatListeners() {
     activateDeleteListeners();
     activateEditListeners();
     activateSaveListeners();
     activateCancelListeners();
     activateDoneListeners();
     activateDragAndDrop();
-    clear()
 }
 
 
 //   delete element
 
-  function  activateDeleteListeners() { 
+function  activateDeleteListeners() { 
     let deleteBtn = document.querySelectorAll(".deleteBtn")
     deleteBtn.forEach(db => {
         db.addEventListener("click" , function(){
@@ -97,34 +114,34 @@ function displayItems() {
             }
         })
     });
-   }
-   function deleteItem(i){
+}
+function deleteItem(i){
     itemArray.splice(i, 1)
     localStorage.setItem('items' , JSON.stringify(itemArray))
-     displayItems()
-   }
+    displayItems()
+}
 
-   //   edit element
-   function    activateEditListeners() { 
+//   edit element
+function    activateEditListeners() { 
     let editBtns = document.querySelectorAll(".editBtn")
     const update_controller = document.querySelectorAll('.update_controller')
     const inputs = document.querySelectorAll('.done_controller textarea')
     let items = document.querySelectorAll(".task")
 
-            editBtns.forEach((eb, i) => {
-                eb.addEventListener("click" , function(){
-                    update_controller[i].classList.add('active');
-                    inputs[i].disabled = false;
+    editBtns.forEach((eb, i) => {
+        eb.addEventListener("click" , function(){
+            update_controller[i].classList.add('active');
+            inputs[i].disabled = false;
 
-                    items.forEach((item, index) => {
-                        index !== i ?  item.style.pointerEvents = "none" : item.style.pointerEvents = "auto";
-                    })
-                })      
+            items.forEach((item, index) => {
+                index !== i ?  item.style.pointerEvents = "none" : item.style.pointerEvents = "auto";
             })
+        })      
+    })
 }
 
-   //   save edit element
-   function activateSaveListeners() {
+//   save edit element
+function activateSaveListeners() {
     let saveBtns = document.querySelectorAll(".saveBtn");
 
     saveBtns.forEach(saveBtn => {
@@ -140,39 +157,39 @@ function displayItems() {
         });
     });
 }
-   function  updateItem(text , i) { 
+function  updateItem(text , i) { 
     itemArray[i].value = text
     localStorage.setItem('items' , JSON.stringify(itemArray))
-     displayItems()
-    }
-   //   cancel edit element
-   function activateCancelListeners() { 
+    displayItems()
+}
+//   cancel edit element
+function activateCancelListeners() { 
     let cancelBtns = document.querySelectorAll(".cancelBtn");
 
     cancelBtns.forEach((cb) => {
         cb.addEventListener("click", function () {
-        location.reload()
+            location.reload()
         });
     });
 }
-    // make done tasks when done button is clicked
+// make done tasks when done button is clicked
 function  activateDoneListeners() { 
     let doneBtns = document.querySelectorAll(".doneBtns")
 
     doneBtns.forEach((db,i) => {
         db.addEventListener("click" , function(){
             addDoneClass(db,i)
-    });
-   })
+        });
+    })
 }
 function addDoneClass (db,i){
     itemArray[i].done = !itemArray[i].done;
     itemArray[i].done === true ? db.classList.add("done_status") : db.classList.add("undone_status")
     localStorage.setItem("items", JSON.stringify(itemArray));
-     displayItems();
+    displayItems();
 }
 
-    // check done tasks when window loads
+// check done tasks when window loads
 function doneStatus(){    
     let doneBtns = document.querySelectorAll(".doneBtns")
     let deleteBtn = document.querySelectorAll(".deleteBtn")
@@ -185,69 +202,99 @@ function doneStatus(){
     })
 }
 
-    //clear
-    function clear() {
-        let clearBtns = document.querySelectorAll(".clearBtn")
-        let tasks = document.querySelectorAll(".task")
-
-        clearBtns.forEach((cb, i) => {
-            cb.addEventListener("click", function () {
-             tasks.forEach((task) => {
-                if (task.classList.contains(`chart${i}`)) {
-                    task.remove();
-                }
-            })
-            let items = JSON.parse(localStorage.getItem('items')) || [];
-            items = items.filter((item) => item.chart !== i);
-            localStorage.setItem('items', JSON.stringify(items))
-          })  
-        })
-    }    
+//clear
+function clear() {
+    const clearBtns = document.querySelectorAll(".clearBtn");
+    
+    clearBtns.forEach((btn) => {
+        // Remove any existing click listeners
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
+        
+        newBtn.addEventListener("click", function () {
+            const column = this.closest('.todo, .doing, .check, .done');
+            const columnIndex = column.querySelector('.charts').dataset.column;
+            
+            if (confirm("Are you sure you want to delete all tasks in this column?")) {
+                // Filter out items that don't belong to this column
+                itemArray = itemArray.filter(item => item.chart !== parseInt(columnIndex));
+                
+                // Update localStorage
+                localStorage.setItem('items', JSON.stringify(itemArray));
+                
+                // Refresh the display
+                displayItems();
+            }
+        });
+    });
+}    
 // drag and drop
 
 function activateDragAndDrop() {
-    const items = document.querySelectorAll(".task"); // تغییر به ".task"
-    let draggedItem = null;
+    const tasks = document.querySelectorAll(".task");
+    const columns = document.querySelectorAll(".charts");
+    let draggedTask = null;
+    let draggedTaskIndex = null;
 
-    items.forEach((item) => {
-        item.addEventListener("dragstart", (e) => {
-            draggedItem = item;
+    tasks.forEach(task => {
+        task.addEventListener("dragstart", (e) => {
+            draggedTask = task;
+            draggedTaskIndex = parseInt(task.dataset.index);
+
             e.dataTransfer.effectAllowed = "move";
-            e.dataTransfer.setData("text/plain", item.dataset.index);
-            item.classList.add("dragging");
+            task.classList.add("dragging");
         });
 
-        item.addEventListener("dragover", (e) => {
-            e.preventDefault();
-            e.dataTransfer.dropEffect = "move";
-        });
+        task.addEventListener("dragend", () => {
 
-        item.addEventListener("drop", (e) => {
-            e.preventDefault();
-            const fromIndex = e.dataTransfer.getData("text/plain");
-            const toIndex = item.dataset.index;
-
-            if (fromIndex !== toIndex) {
-                swapItems(fromIndex, toIndex);
-            }
-        });
-
-        item.addEventListener("dragend", () => {
-            item.classList.remove("dragging");
+            task.classList.remove("dragging");
+            draggedTask = null;
+            draggedTaskIndex = null;
         });
     });
-}
 
-function swapItems(fromIndex, toIndex) {
-    fromIndex = parseInt(fromIndex);
-    toIndex = parseInt(toIndex);
+    columns.forEach(column => {
+        column.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = "move";
+            column.classList.add("dragging");
+        });
 
-    const temp = itemArray[fromIndex];
-    itemArray[fromIndex] = itemArray[toIndex];
-    itemArray[toIndex] = temp;
+        column.addEventListener("dragleave", () => {
+            column.classList.remove("dragging");
+        });
 
-    localStorage.setItem("items", JSON.stringify(itemArray));
-    displayItems();
+        column.addEventListener("drop", (e) => {
+            e.preventDefault();
+            column.classList.remove("dragging");
+            
+            if (draggedTask && draggedTaskIndex !== null) {
+                const toColumn = parseInt(column.dataset.column);
+                const fromColumn = itemArray[draggedTaskIndex].chart;
+                
+                if (fromColumn !== toColumn) {
+                    // Get items in the target column
+                    const columnItems = itemArray.filter(item => item.chart === toColumn);
+                    const insertIndex = columnItems.length;
+                    
+                    // Remove item from its current position
+                    const [movedItem] = itemArray.splice(draggedTaskIndex, 1);
+                    movedItem.chart = toColumn;
+                    
+                    // Find the position to insert the item
+                    const targetIndex = itemArray.findIndex(item => item.chart > toColumn);
+                    if (targetIndex === -1) {
+                        itemArray.push(movedItem);
+                    } else {
+                        itemArray.splice(targetIndex, 0, movedItem);
+                    }
+                    
+                    localStorage.setItem("items", JSON.stringify(itemArray));
+                    displayItems();
+                }
+            }
+        });
+    });
 }
 
 // date
@@ -257,6 +304,63 @@ function displayday(){
     date =date.toString().split(" ")
     document.querySelector("#date").innerHTML = date[1] + " " +date[2] + " " +date[3]
 }
+//table
+function table(){
+    let tableBtn = document.querySelector(".table")
+    let boardBtn = document.querySelector(".board")
+    let listView = document.querySelector(".list_to_do")
+    let tableView = document.querySelector(".table_view")
+    
+    tableBtn.addEventListener("click" , function(){
+        // Toggle views
+        listView.style.display = listView.style.display === "none" ? "flex" : "none"
+        tableView.style.display = tableView.style.display === "none" ? "block" : "none"
+        
+        // Update table content
+        if (tableView.style.display === "block") {
+            updateTableView()
+        }
+    })
+
+    boardBtn.addEventListener("click", function() {
+        // Show list view and hide table view
+        const board = document.querySelector(".board")
+        board.classList.add("active")
+        const table = document.querySelector(".table")
+        table.classList.remove("active")
+        listView.style.display = "flex"
+        tableView.style.display = "none"
+    })
+}
+
+function updateTableView() {
+    const table = document.querySelector(".table")
+    table.classList.add("active")
+    const board = document.querySelector(".board")
+    board.classList.remove("active")
+    const tableBody = document.getElementById("tableBody")
+    tableBody.innerHTML = ""
+    
+    // Sort items by chart (To Do -> Doing -> Check -> Done)
+    const sortedItems = [...itemArray].sort((a, b) => a.chart - b.chart);
+    
+    sortedItems.forEach((item, index) => {
+        const row = document.createElement("tr")
+        
+        // Task cell
+        const taskCell = document.createElement("td")
+        taskCell.innerHTML = `
+            <div class="task-cell">
+                <span>${item.value}</span>
+            </div>
+        `
+        row.appendChild(taskCell)        
+        tableBody.appendChild(row)
+    })
+    
+
+}
+
 
 // add your function
 window.onload = function () {
@@ -264,8 +368,8 @@ window.onload = function () {
     displayday()
     displayItems()
     doneStatus()
+    clear()
+    table()
     let item =  document.querySelectorAll(".item") 
     item.forEach((i)=> i.value = "")
 }
-
-
